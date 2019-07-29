@@ -1,0 +1,5 @@
+config = {
+    "olx": [
+        "https://www.olx.ua/elektronika/telefony-i-aksesuary/mobilnye-telefony-smartfony/apple/kiev/q-iphone-xs-max-512gb/?search%5Bprivate_business%5D=private"
+    ]
+}
