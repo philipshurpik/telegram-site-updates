@@ -1,0 +1,24 @@
+import logging
+
+
+def get_dou_item(item):
+    try:
+        return {
+            "name": item.find("div", {'class': 'title'}).text.replace('\n\n', ' ').replace('\n', ' ').replace('\xa0',' ').strip(),
+            "company": item.find("a", {'class': 'company'}).text.strip(),
+            "link": item.find("a", {'class': 'vt'}).attrs['href'].split('?')[0].strip(),
+            "description": item.find("div", {'class': 'sh-info'}).text.replace('\n\n', ' ').replace('\t', '').replace('\xa0', ' ').strip()
+        }
+    except:
+        logging.error("Error in get_dou_item", exc_info=True)
+        return None
+
+
+def get_dou_items(soup):
+    items_list = []
+    items = soup.find_all("li", {'class': 'l-vacancy'})
+    for item in items:
+        item_data = get_dou_item(item)
+        if item_data:
+            items_list.append(item_data)
+    return items_list

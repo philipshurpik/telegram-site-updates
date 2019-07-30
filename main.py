@@ -9,7 +9,7 @@ from resources import getters
 
 def start(key, url):
     try:
-        response = requests.get(url)
+        response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
     except Exception as e:
         print(repr(e))
         sys.exit(1)
