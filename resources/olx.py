@@ -1,14 +1,16 @@
 import logging
 
 
-def get_olx_item_text(item):
+def get_olx_item(item):
     try:
         return {
             "name": item.find_all("strong")[0].text,
-            "price": item.find_all("strong")[1].text
+            "price": item.find_all("strong")[1].text,
+            "link": item.find_all('a')[0].attrs['href'].split('#')[0],
+            "photo": item.find_all('img')[0].attrs['src'].split(';')[0]
         }
     except:
-        logging.error("Error in get_olx_item_text", exc_info=True)
+        logging.error("Error in get_olx_item", exc_info=True)
         return None
 
 
@@ -17,7 +19,7 @@ def get_olx_items(soup):
     items = soup.find_all("tr", {"class": "wrap"})
     items = [item for item in items if 'promoted-list' not in item.td.div.table['class']]
     for item in items:
-        item_data = get_olx_item_text(item)
+        item_data = get_olx_item(item)
         if item_data:
             items_list.append(item_data)
     return items_list
