@@ -1,14 +1,14 @@
 def load_user_config():
     try:
-        from .user_config import config
+        from .user_config import Config
     except ImportError:
-        from .demo_config import config
-    return config
+        from .demo_config import Config
+    return Config()
 
 
 def init():
     cfg = load_user_config()
-    print(f"Config keys: {list(cfg.keys())}")
+    print(f"Config resources list keys: {list(cfg.resources.keys())}")
     return cfg
 
 

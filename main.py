@@ -1,33 +1,24 @@
-import sys
+import time
+from multiprocessing import Queue
 
-import requests
-from bs4 import BeautifulSoup
-
-from config import config
-from resources import getters
-
-
-def start(key, url):
-    try:
-        response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
-    except Exception as e:
-        print(repr(e))
-        sys.exit(1)
-
-    if response.status_code != 200:
-        print("Non success status code returned " + str(response.status_code))
-        sys.exit(1)
-
-    soup = BeautifulSoup(response.text, 'lxml')
-
-    flats = getters[key](soup)
-    print(flats)
+from config import config as cfg
+from parser import Parser
+from utils.process_utils import start_process, check_processes
 
 
 def main():
-    for key in config.keys():
-        for url in config[key]:
-            start(key, url)
+    processes = []
+    updates_queue = Queue()
+
+    for key in cfg.resources.keys():
+        item = cfg.resources[key]
+        for i, url in enumerate(item):
+            starter = lambda: Parser(name=f"{key}_{i}", updates_queue=updates_queue, key=key, url=url, timeout=cfg.timeout)
+            processes += [start_process(starter)]
+
+    while True:
+        time.sleep(1)
+        processes = check_processes(processes)
 
 
 if __name__ == '__main__':
