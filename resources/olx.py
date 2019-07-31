@@ -23,3 +23,10 @@ def get_olx_items(soup):
         if item_data:
             items_list.append(item_data)
     return items_list
+
+
+def get_tracked_fields():
+    return {
+        "keys": ["name"],
+        "value": "price"
+    }

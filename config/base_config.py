@@ -1,4 +1,5 @@
 class Config:
+    data_folder = "data"
     timeout = 60 * 60
     resources = {
         "olx": [

@@ -2,7 +2,7 @@ def load_user_config():
     try:
         from .user_config import Config
     except ImportError:
-        from .demo_config import Config
+        from .base_config import Config
     return Config()
 
 

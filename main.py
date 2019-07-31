@@ -1,3 +1,4 @@
+import os
 import time
 from multiprocessing import Queue
 
@@ -7,6 +8,7 @@ from utils.process_utils import start_process, check_processes
 
 
 def main():
+    os.makedirs(cfg.data_folder, exist_ok=True)
     processes = []
     updates_queue = Queue()
 
