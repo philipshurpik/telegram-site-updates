@@ -30,8 +30,9 @@ class Parser(DaemonProcess):
             items = self.parse(self.key, self.url)
             if not self.state_dict:
                 self.state_dict = self.init_state_dict(items)
-                self.save_state()
-                print(f"Parser {self.name}, initialized with: {len(items)} items")
+                if len(items) > 0:
+                    self.save_state()
+                    print(f"Parser {self.name}, initialized with: {len(items)} items")
             else:
                 new_items, updated_items = self.update_state_dict(items)
                 if len(new_items) > 0 or len(updated_items) > 0:
@@ -39,7 +40,7 @@ class Parser(DaemonProcess):
                     self.updates_queue.put({"name": self.name, "key": self.key, "url": self.url,
                                             "time": time.time(), "new_items": new_items, "updated_items": updated_items})
                     print(f"Parser {self.name}, new: {len(new_items)} items, updated: {len(updated_items)} items")
-            time.sleep(self.timeout)
+            time.sleep(self.timeout * np.random.uniform(low=0.8, high=2))
 
     def load_state(self):
         state_dict = np.load(self.dict_path, allow_pickle=True).item() if os.path.exists(self.dict_path) else {}
