@@ -15,11 +15,11 @@ def main():
     for key in cfg.resources.keys():
         item = cfg.resources[key]
         for i, url in enumerate(item):
-            starter = lambda: Parser(name=f"{key}_{i}", updates_queue=updates_queue, key=key, url=url, timeout=cfg.timeout)
+            starter = lambda: Parser(name=f"{key}_{i}", updates_queue=updates_queue, key=key, url=url, timeout=cfg.poll_timeout)
             processes += [start_process(starter)]
 
     while True:
-        time.sleep(60)
+        time.sleep(cfg.error_timeout)
         processes = check_processes(processes)
 
 

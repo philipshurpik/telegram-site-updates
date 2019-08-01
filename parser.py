@@ -1,5 +1,5 @@
+import logging
 import os
-import sys
 import time
 
 import numpy as np
@@ -43,7 +43,8 @@ class Parser(DaemonProcess):
 
     def load_state(self):
         state_dict = np.load(self.dict_path, allow_pickle=True).item() if os.path.exists(self.dict_path) else {}
-        print(f"Loaded state dict for parser {self.name}, state items count: {len(state_dict)}") if state_dict else None
+        print(f"State dict loaded for parser {self.name}, state items count: {len(state_dict)}") \
+            if state_dict else print(f"State dict empty for parser {self.name}")
         return state_dict
 
     def save_state(self):
@@ -80,13 +81,14 @@ class Parser(DaemonProcess):
     def parse(key, url):
         try:
             response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+            if response.status_code != 200:
+                logging.error("Error code: " + str(response.status_code))
+                time.sleep(cfg.error_timeout)
+                return []
         except Exception as e:
-            print(repr(e))
-            sys.exit(1)
-
-        if response.status_code != 200:
-            print("Error code: " + str(response.status_code))
-            sys.exit(1)
+            logging.error(repr(e))
+            time.sleep(cfg.error_timeout)
+            return []
 
         soup = BeautifulSoup(response.text, 'lxml')
         items = getters[key](soup)
