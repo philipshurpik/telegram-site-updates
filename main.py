@@ -19,7 +19,7 @@ def main():
             processes += [start_process(starter)]
 
     while True:
-        time.sleep(1)
+        time.sleep(60)
         processes = check_processes(processes)
 
 
