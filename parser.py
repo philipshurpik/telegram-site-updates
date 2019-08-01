@@ -34,10 +34,10 @@ class Parser(DaemonProcess):
             if not self.state_dict:
                 self.state_dict = self.init_state_dict(items)
             else:
-                dict_diff = self.check_item_updates(items)
-                if dict_diff:
+                new_items, updated_items = self.update_state_dict(items)
+                if len(new_items) > 0 or len(updated_items) > 0:
                     self.updates_queue.put({"name": self.name, "key": self.key, "url": self.url,
-                                            "time": time.time(), "update": dict_diff})
+                                            "time": time.time(), "new_items": new_items, "updated_items": updated_items})
 
             print(f"Parser {self.name}, initialized with: {len(items)} items")
             time.sleep(self.timeout)
@@ -49,9 +49,25 @@ class Parser(DaemonProcess):
             state_dict[combined_key] = item
         return state_dict
 
-    def check_item_updates(self, items):
+    def update_state_dict(self, items):
+        new_items = []
+        updated_items = []
 
-        return {}
+        for item in items:
+            combined_key = "_".join([item[key] for key in self.tracked_keys])
+            if combined_key not in self.state_dict:
+                self.state_dict[combined_key] = item
+                new_items.append(item)
+            else:
+                state_item = self.state_dict[combined_key]
+                diff = []
+                for tracked_value in self.tracked_values:
+                    if item[tracked_value] != state_item[tracked_value]:
+                        diff.append({"field": tracked_value, "before": state_item[tracked_value], "after": item[tracked_value]})
+                if len(diff) > 0:
+                    updated_items.append({"item": item, "diff": diff})
+                    self.state_dict[combined_key] = item
+        return new_items, updated_items
 
     @staticmethod
     def parse(key, url):

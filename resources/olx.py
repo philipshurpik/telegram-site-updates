@@ -3,11 +3,13 @@ import logging
 
 def get_olx_item(item):
     try:
+        link = item.find_all('a')[0].attrs['href'].split('#')[0]
         return {
+            "id": link.split('/')[-1].split('.')[0],
             "name": item.find_all("strong")[0].text,
             "price": item.find_all("strong")[1].text,
-            "link": item.find_all('a')[0].attrs['href'].split('#')[0],
-            "photo": item.find_all('img')[0].attrs['src'].split(';')[0]
+            "link": link,
+            "photo": item.find_all('img')[0].attrs['src'].split(';')[0],
         }
     except:
         logging.error("Error in get_olx_item", exc_info=True)
@@ -27,6 +29,6 @@ def get_olx_items(soup):
 
 def get_tracked_fields():
     return {
-        "keys": ["name"],
+        "keys": ["id"],
         "values": ["price"]
     }
