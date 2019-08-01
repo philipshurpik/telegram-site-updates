@@ -27,5 +27,5 @@ def get_dou_items(soup):
 def get_tracked_fields():
     return {
         "keys": ["company", "title"],
-        "value": None
+        "values": None
     }
