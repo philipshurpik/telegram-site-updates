@@ -1,4 +1,3 @@
-import hashlib
 import os
 import sys
 import time
@@ -9,6 +8,7 @@ from bs4 import BeautifulSoup
 
 from config import config as cfg
 from resources import getters, tracked_fields
+from utils.hash_utils import get_hash
 from utils.process_utils import DaemonProcess
 
 
@@ -21,9 +21,8 @@ class Parser(DaemonProcess):
         self.url = url
         self.timeout = timeout
         self.tracked_keys = tracked_fields[key]["keys"]
-        self.combined_key = "_".join(self.tracked_keys)
-        self.tracked_value = tracked_fields[key]["value"]
-        self.dict_path = os.path.join(cfg.data_folder, f"{key}_{hashlib.md5(url.encode()).hexdigest()}.dat")
+        self.tracked_values = tracked_fields[key]["values"]
+        self.dict_path = os.path.join(cfg.data_folder, f"{key}_{get_hash(url)}.dat")
         self.state_dict = self.load_state()
 
     def load_state(self):
@@ -34,11 +33,23 @@ class Parser(DaemonProcess):
             items = self.parse(self.key, self.url)
             if not self.state_dict:
                 self.state_dict = self.init_state_dict(items)
+            else:
+                dict_diff = self.check_item_updates(items)
+                if dict_diff:
+                    self.updates_queue.put({"name": self.name, "key": self.key, "url": self.url,
+                                            "time": time.time(), "update": dict_diff})
 
             print(f"Parser {self.name}, initialized with: {len(items)} items")
             time.sleep(self.timeout)
 
     def init_state_dict(self, items):
+        state_dict = {}
+        for item in items:
+            combined_key = "_".join([item[key] for key in self.tracked_keys])
+            state_dict[combined_key] = item
+        return state_dict
+
+    def check_item_updates(self, items):
 
         return {}
 
