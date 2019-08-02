@@ -3,11 +3,13 @@ import logging
 
 def get_lun_item(item):
     try:
+        link = item.find_all('a')[0].attrs['href'].split('?')[0]
         return {
+            "id": link.split('/')[-1],
             "name": f'{item.select("div[title]")[0].text} | {" | ".join([x.text for x in item.find_all("li")])}',
             "price": item.select("div > div > div > div > div")[0].text,
             "text": item.select("div > div > div > div")[-1].text,
-            "link": f"https://www.lun.ua{item.find_all('a')[0].attrs['href'].split('?')[0]}"
+            "link": f"https://www.lun.ua{link}"
         }
     except:
         logging.error("Error in get_lun_item", exc_info=True)
@@ -27,6 +29,6 @@ def get_lun_items(soup):
 
 def get_tracked_fields():
     return {
-        "keys": ["name"],
-        "values": ["price"]
+        "keys": ["id"],
+        "values": ["name", "price"]
     }

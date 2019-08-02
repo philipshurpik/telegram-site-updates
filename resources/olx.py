@@ -30,5 +30,5 @@ def get_olx_items(soup):
 def get_tracked_fields():
     return {
         "keys": ["id"],
-        "values": ["price"]
+        "values": ["name", "price"]
     }

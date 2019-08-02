@@ -3,7 +3,7 @@ import time
 from multiprocessing import Queue
 
 from config import config as cfg
-from parser import Parser
+from processes.parser import Parser
 from utils.process_utils import start_process, check_processes
 
 
