@@ -7,9 +7,9 @@ def get_olx_item(item):
         return {
             "id": link.split('/')[-1].split('.')[0],
             "name": item.find_all("strong")[0].text,
-            "price": item.find_all("strong")[1].text,
+            "price": item.find_all("strong")[1].text if len(item.find_all("strong")) > 1 else None,
             "link": link,
-            "photo": item.find_all('img')[0].attrs['src'].split(';')[0],
+            "photo": item.find_all('img')[0].attrs['src'].split(';')[0] if len(item.find_all('img')) > 0 else None,
         }
     except:
         logging.error("Error in get_olx_item", exc_info=True)
