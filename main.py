@@ -1,22 +1,22 @@
+import multiprocessing
 import os
 import time
-from multiprocessing import Queue
 
 from config import config as cfg
-from processes import Parser, Updater
+from processes import UserProcess, Updater
 from utils.process_utils import start_process, check_processes
 
 
 def main():
     os.makedirs(cfg.data_folder, exist_ok=True)
     processes = []
-    updates_queue = Queue()
+    updates_queue = multiprocessing.Queue()
 
-    for key in cfg.resources.keys():
-        item = cfg.resources[key]
-        for i, url in enumerate(item):
-            starter = lambda: Parser(name=f"{key}_{i}", updates_queue=updates_queue, key=key, url=url, timeout=cfg.poll_timeout)
-            processes += [start_process(starter)]
+    for key in cfg.users.keys():
+        resources = cfg.users[key]
+        starter = lambda: UserProcess(user_id=key, resources=resources, updates_queue=updates_queue, timeout=cfg.poll_timeout)
+        processes += [start_process(starter)]
+
 
     updater = lambda: Updater(updates_queue=updates_queue)
     processes += [start_process(updater)]
@@ -27,4 +27,5 @@ def main():
 
 
 if __name__ == '__main__':
+    multiprocessing.set_start_method('forkserver')
     main()

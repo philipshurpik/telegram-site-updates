@@ -8,7 +8,6 @@ def load_user_config():
 
 def init():
     cfg = load_user_config()
-    print(f"Config resources list keys: {list(cfg.resources.keys())}")
     return cfg
 
 
