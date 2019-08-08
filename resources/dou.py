@@ -32,4 +32,4 @@ def get_tracked_fields():
     }
 
 def get_new_message(item):
-    return f"{item['title']} | {item['text'][0:100]}... | {item['link']}"
+    return f"{item['title']}\n\n{item['text'][0:200]}...\n{item['link']}"

@@ -69,7 +69,7 @@ class ResourceParser:
                     if item[tracked_value] != state_item[tracked_value]:
                         diff.append({"field": tracked_value, "before": state_item[tracked_value], "after": item[tracked_value]})
                 if len(diff) > 0:
-                    updated_items.append({"item": item, "diff": diff})
+                    updated_items.append({"data": item, "diff": diff})
                     self.state_dict[combined_key] = item
         return new_items, updated_items
 

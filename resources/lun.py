@@ -33,5 +33,15 @@ def get_tracked_fields():
         "values": ["name", "price"]
     }
 
+
 def get_new_message(item):
-    return f"{item['name']} | {item['price']} | {item['text'][0:30]} | {item['link']}"
+    return f"{item['name']}\n\n>>> {item['price']}\n\n{item['text'][0:200]}...\n{item['link']}"
+
+
+def get_message_update(item, diff):
+    diff_fields = [d['field'] for d in diff]
+    update_text = "Обновлено!\n"
+    if 'price' in diff_fields:
+        idx = diff_fields.index("price")
+        update_text = f"Новая цена: {diff[idx]['after']}, старая: {diff[idx]['before']}\n\n"
+    return f"{update_text}{item['name']}\n\n>>> {item['price']}\n\n{item['link']}"

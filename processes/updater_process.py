@@ -1,7 +1,7 @@
 from telegram.ext import Updater
 
 from config import config as cfg
-from resources import templates_new
+from resources import templates_new, templates_update
 from utils.process_utils import DaemonProcess
 
 
@@ -17,9 +17,12 @@ class UpdaterProcess(DaemonProcess):
 
         while True:
             item = self.updates_queue.get()
+            key = item['key']
             if len(item["new_items"]) > 0:
-                key = item['key']
                 for new_item in item["new_items"]:
                     self.updater.bot.send_message(chat_id=list(cfg.users.keys())[0], text=templates_new[key](new_item))
-            if len(item["updated_items"]) > 0:
-                print("Updated items: ", item["url"], item["key"], item["time"], item["updated_items"])
+            if len(item["updated_items"]) > 0 and key in templates_update:
+                for upd_item in item["updated_items"]:
+                    data = upd_item["data"]
+                    diff = upd_item["diff"]
+                    self.updater.bot.send_message(chat_id=list(cfg.users.keys())[0], text=templates_update[key](data, diff))
