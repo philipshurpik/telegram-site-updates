@@ -1,2 +1,2 @@
 from .user_process import UserProcess
-from .updater import Updater
+from .updater_process import UpdaterProcess
