@@ -11,13 +11,15 @@ from utils.hash_utils import get_hash
 
 
 class ResourceParser:
-    def __init__(self, name, key, url):
-        self.name = name
+    def __init__(self, user_id, key, url, index):
+        self.user_id = user_id
         self.key = key
         self.url = url
+        self.index = index
+        self.name = f"{self.user_id}_{key}_{index}"
         self.tracked_keys = tracked_fields[key]["keys"]
         self.tracked_values = tracked_fields[key]["values"]
-        self.dict_path = os.path.join(cfg.data_folder, f"{key}_{get_hash(url)}.npy")
+        self.dict_path = os.path.join(cfg.data_folder, f"{user_id}_{key}_{get_hash(url)}.npy")
         self.state_dict = self.load_state()
 
     def check_updates(self):

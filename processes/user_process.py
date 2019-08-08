@@ -22,7 +22,7 @@ class UserProcess(DaemonProcess):
         for key in self.resources.keys():
             item = self.resources[key]
             for i, url in enumerate(item):
-                parsers.append(ResourceParser(name=f"{self.user_id}_{key}_{i}", key=key, url=url))
+                parsers.append(ResourceParser(user_id=self.user_id, key=key, url=url, index=i))
         return parsers
 
     def target(self):
