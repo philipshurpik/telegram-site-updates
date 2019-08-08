@@ -32,3 +32,11 @@ def get_tracked_fields():
         "keys": ["id"],
         "values": ["name", "price"]
     }
+
+
+def get_new_message(item):
+    return f"{item['name']} | {item['price']} | {item['photo']} | {item['link']}"
+
+def get_message_update(item, diff):
+    # new_data = ""
+    return f"Обновлено: {item['name']} | {item['price']} | {item['photo']} | {item['link']}"
