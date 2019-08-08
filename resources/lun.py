@@ -7,7 +7,7 @@ def get_lun_item(item):
         return {
             "id": link.split('/')[-1],
             "name": f'{item.select("div[title]")[0].text} | {" | ".join([x.text for x in item.find_all("li")])}',
-            "price": item.select("div > div > div > div > div")[0].text,
+            "price": item.select("div > a > div")[-1].text,
             "text": item.select("div > div > div > div")[-1].text,
             "link": f"https://www.lun.ua{link}"
         }
@@ -32,3 +32,6 @@ def get_tracked_fields():
         "keys": ["id"],
         "values": ["name", "price"]
     }
+
+def get_new_message(item):
+    return f"{item['name']} | {item['price']} | {item['text'][0:30]} | {item['link']}"

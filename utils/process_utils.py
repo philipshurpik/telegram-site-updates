@@ -13,6 +13,7 @@ class DaemonProcess(multiprocessing.Process):
 
     def run(self):
         try:
+            print("run", self.name)
             self.target()
         except KeyboardInterrupt:
             pass

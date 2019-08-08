@@ -9,7 +9,7 @@ from utils.process_utils import DaemonProcess
 
 class UserProcess(DaemonProcess):
     def __init__(self, updates_queue, timeout, user_id, resources):
-        super(UserProcess, self).__init__(name=user_id)
+        super(UserProcess, self).__init__(name=f"UserProcess {user_id}")
         self.user_id = user_id
         self.updates_queue = updates_queue
         self.resources = resources

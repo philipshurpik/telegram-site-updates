@@ -4,7 +4,8 @@ import logging
 def get_dou_item(item):
     try:
         return {
-            "title": item.find("div", {'class': 'title'}).text.replace('\n\n', ' ').replace('\n', ' ').replace('\xa0', ' ').strip(),
+            "title": item.find("div", {'class': 'title'}).text.replace('\n\n', ' ').replace('\t', '')
+                .replace('\n', ' ').replace('\xa0', ' ').replace('  ', ' ').strip(),
             "company": item.find("a", {'class': 'company'}).text.strip(),
             "link": item.find("a", {'class': 'vt'}).attrs['href'].split('?')[0].strip(),
             "text": item.find("div", {'class': 'sh-info'}).text.replace('\n\n', ' ').replace('\t', '').replace('\xa0', ' ').strip()
@@ -29,3 +30,6 @@ def get_tracked_fields():
         "keys": ["company", "title"],
         "values": None
     }
+
+def get_new_message(item):
+    return f"{item['title']} | {item['text'][0:100]}... | {item['link']}"
