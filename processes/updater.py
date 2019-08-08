@@ -1,10 +1,14 @@
+from telegram.ext import Updater
+
+from config import config as cfg
 from utils.process_utils import DaemonProcess
 
 
-class Updater(DaemonProcess):
+class UpdaterProcess(DaemonProcess):
     def __init__(self, updates_queue):
-        super(Updater, self).__init__(name="updater")
+        super(UpdaterProcess, self).__init__(name="updater_process")
         self.updates_queue = updates_queue
+        self.updater = Updater(cfg.telegram_token, use_context=True)
 
     def target(self):
         while True:
