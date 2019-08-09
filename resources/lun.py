@@ -1,5 +1,8 @@
 import logging
 
+import requests
+from bs4 import BeautifulSoup
+
 
 def get_lun_item(item):
     try:
@@ -35,13 +38,29 @@ def get_tracked_fields():
 
 
 def get_new_message(item):
-    return f"{item['name']}\n\n>>> {item['price']}\n\n{item['text'][0:200]}...\n{item['link']}"
+    link, photo = _get_actual_link_and_photo(item)
+    return f"{item['name']}\n\n>>> {item['price']}\n\n{item['text'][0:200]}...\n{photo}\n{link}"
 
 
 def get_message_update(item, diff):
+    link, photo = _get_actual_link_and_photo(item)
     diff_fields = [d['field'] for d in diff]
     update_text = "Обновлено!\n"
     if 'price' in diff_fields:
         idx = diff_fields.index("price")
         update_text = f"Новая цена: {diff[idx]['after']}, старая: {diff[idx]['before']}\n\n"
-    return f"{update_text}{item['name']}\n\n>>> {item['price']}\n\n{item['link']}"
+    return f"{update_text}{item['name']}\n\n>>> {item['price']}\n\n{photo}\n{link}"
+
+
+def _get_actual_link_and_photo(item):
+    try:
+        response = requests.get(item['link'], headers={'User-Agent': 'Mozilla/5.0'})
+        soup = BeautifulSoup(response.text, 'lxml')
+        actual_link = soup.find_all('a')[-1].attrs['href']
+        response = requests.get(actual_link, headers={'User-Agent': 'Mozilla/5.0'})
+        soup = BeautifulSoup(response.text, 'lxml')
+        imgs = soup.find_all('img')
+        photo = next((img.attrs['src'] for img in imgs if ".jp" in img.attrs['src']), "")
+        return actual_link, photo
+    except:
+        return item['link'], ""

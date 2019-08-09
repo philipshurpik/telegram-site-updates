@@ -25,6 +25,9 @@ class ResourceParser:
     def check_updates(self):
         new_items, updated_items = [], []
         items = self.parse(self.key, self.url)
+        # DEBUG code
+        # if len(items) > 0 and 'text' in items[0]:
+        #     items[4]['id'] = '0' + items[4]['id']
         if not self.state_dict:
             self.state_dict = self.init_state_dict(items)
             if len(items) > 0:
