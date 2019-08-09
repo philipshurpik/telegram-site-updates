@@ -20,9 +20,17 @@ class UpdaterProcess(DaemonProcess):
             key = item['key']
             if len(item["new_items"]) > 0:
                 for new_item in item["new_items"]:
-                    self.updater.bot.send_message(chat_id=list(cfg.users.keys())[0], text=templates_new[key](new_item))
+                    self.updater.bot.send_message(
+                        chat_id=list(cfg.users.keys())[0],
+                        text=templates_new[key](new_item),
+                        parse_mode='HTML'
+                    )
             if len(item["updated_items"]) > 0 and key in templates_update:
                 for upd_item in item["updated_items"]:
                     data = upd_item["data"]
                     diff = upd_item["diff"]
-                    self.updater.bot.send_message(chat_id=list(cfg.users.keys())[0], text=templates_update[key](data, diff))
+                    self.updater.bot.send_message(
+                        chat_id=list(cfg.users.keys())[0],
+                        text=templates_update[key](data, diff),
+                        parse_mode='HTML'
+                    )
