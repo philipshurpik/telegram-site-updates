@@ -7,11 +7,13 @@ from bs4 import BeautifulSoup
 def get_lun_item(item):
     try:
         link = item.find_all('a')[0].attrs['href'].split('?')[0]
+        text = item.select("div > div > div > div")[-1].text
         return {
             "id": link.split('/')[-1],
             "name": f'{item.select("div[title]")[0].text} | {" | ".join([x.text for x in item.find_all("li")])}',
             "price": item.select("div > a > div")[-1].text,
-            "text": item.select("div > div > div > div")[-1].text,
+            "text_mini": text[:10],
+            "text": text,
             "link": f"https://www.lun.ua{link}"
         }
     except:
@@ -32,8 +34,8 @@ def get_lun_items(soup):
 
 def get_tracked_fields():
     return {
-        "keys": ["id"],
-        "values": ["name", "price"]
+        "keys": ["name", "text_mini"],
+        "values": ["price"]
     }
 
 
