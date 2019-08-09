@@ -35,12 +35,15 @@ def get_tracked_fields():
 
 
 def get_new_message(item):
-    return f"{item['name']}\n\n>>> {item['price']}\n\n{item['photo']}\n\n{item['link']}"
+    link = item['link']
+    return f"{item['name']}\n<b>{item['price']}</b>\n{item['photo']}\n<a href='{link}'>Открыть объявление</a>"
+
 
 def get_message_update(item, diff):
     diff_fields = [d['field'] for d in diff]
     update_text = "Обновлено!\n"
+    link = item['link']
     if 'price' in diff_fields:
         idx = diff_fields.index("price")
-        update_text = f"Новая цена: {diff[idx]['after']}, старая: {diff[idx]['before']}\n\n"
-    return f"{update_text}{item['name']}\n\n>>> {item['price']}\n\n{item['photo']}\n\n{item['link']}"
+        update_text = f"Новая цена: <b>{diff[idx]['after']}</b>, старая: <b>{diff[idx]['before']}</b>\n\n"
+    return f"{update_text}{item['name']}\n<b>{item['price']}</b>\n{item['photo']}\n<a href='{link}'>Открыть объявление</a>"
