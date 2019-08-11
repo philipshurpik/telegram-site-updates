@@ -1,8 +1,9 @@
 class Config:
     data_folder = "data"
     error_timeout = 60
-    poll_timeout = 60 * 60
+    poll_timeout = 60 * 30
     telegram_token = 'TOKEN'
+    available_resources = ["olx", "lun", "dou"]
     users = {
         'USER_ID': {
             "olx": [
