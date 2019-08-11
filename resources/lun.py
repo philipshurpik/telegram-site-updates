@@ -64,3 +64,7 @@ def _get_actual_link_and_photo(item):
         return actual_link, photo
     except:
         return item['link'], ""
+
+
+def get_example_link():
+    return "https://www.lun.ua/uk/%D0%BE%D1%80%D0%B5%D0%BD%D0%B4%D0%B0-%D0%BA%D0%B2%D0%B0%D1%80%D1%82%D0%B8%D1%80-%D0%BA%D0%B8%D1%97%D0%B2?priceMax=10000"

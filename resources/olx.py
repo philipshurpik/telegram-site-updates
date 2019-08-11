@@ -47,3 +47,7 @@ def get_message_update(item, diff):
         idx = diff_fields.index("price")
         update_text = f"Новая цена: <b>{diff[idx]['after']}</b>, старая: <b>{diff[idx]['before']}</b>\n\n"
     return f"{update_text}{item['name']}\n<b>{item['price']}</b>\n{item['photo']}\n<a href='{link}'>Открыть объявление</a>"
+
+
+def get_example_link():
+    return "https://www.olx.ua/elektronika/telefony-i-aksesuary/kiev/q-apple/"
