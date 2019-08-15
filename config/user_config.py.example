@@ -1,0 +1,5 @@
+from config.base_config import Config as BaseConfig
+
+
+class Config(BaseConfig):
+    telegram_token = 'chattoken from botfather'

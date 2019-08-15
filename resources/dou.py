@@ -31,5 +31,10 @@ def get_tracked_fields():
         "values": None
     }
 
+
 def get_new_message(item):
     return f"{item['title']}\n\n{item['text'][0:200]}...\n{item['link']}"
+
+
+def get_example_link():
+    return "https://jobs.dou.ua/vacancies/?category=Front%20End"
