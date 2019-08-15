@@ -1,3 +1,4 @@
+# import json
 import logging
 import os
 
@@ -48,12 +49,15 @@ class ResourceParser:
 
     def save_state(self):
         np.save(self.dict_path, self.state_dict, allow_pickle=True)
+        # with open(self.dict_path.replace('.npy', '.json'), 'w') as json_file:
+        #     json.dump(self.state_dict, json_file)
 
     def init_state_dict(self, items):
         state_dict = {}
         for item in items:
             combined_key = "_".join([item[key] for key in self.tracked_keys])
             state_dict[combined_key] = item
+        # self.save_state()
         return state_dict
 
     def update_state_dict(self, items):
