@@ -64,8 +64,15 @@ class ListenerProcess(DaemonProcess):
         )
 
     def chat_message(self, update, context):
-        # add handling of different commands
-        context.bot.send_message(chat_id=get_chat_id(update), text=update.message.text)
+        chat_id = get_chat_id(update)
+        if self.last_commands.get(chat_id):
+            command = self.last_commands[chat_id].split('_')[0]
+            resource = self.last_commands[chat_id].split('_')[1]
+            self.last_commands[chat_id] = None
+            # add handling of different commands
+            context.bot.send_message(chat_id=chat_id, text=f"Your command {command} on {resource}")
+        else:
+            context.bot.send_message(chat_id=chat_id, text=f"Sorry, I don't understand your command. Use /start to start")
 
     def target(self):
         print("listener started")
