@@ -20,6 +20,8 @@ class Messages:
     list_resources = 'List current resources'
     go_back = 'Go back'
 
+    error_unknown_command = 'Sorry, I don\'t understand your command. Use /start to start'
+
 
 def error_callback(bot, update, error):
     logging.error("Something wrong happened", error)
@@ -40,10 +42,9 @@ def add_menu_keyboard():
     return InlineKeyboardMarkup(keyboard + [[InlineKeyboardButton(Messages.go_back, callback_data=f'main')]])
 
 
-class ListenerProcess(DaemonProcess):
-    def __init__(self, admin_queue):
-        super(ListenerProcess, self).__init__(name="ListenerProcess")
-        self.admin_queue = admin_queue
+class AdminProcess(DaemonProcess):
+    def __init__(self):
+        super(AdminProcess, self).__init__(name="AdminProcess")
         self.updater = None
         self.last_commands = {}
 
@@ -72,10 +73,10 @@ class ListenerProcess(DaemonProcess):
             # add handling of different commands
             context.bot.send_message(chat_id=chat_id, text=f"Your command {command} on {resource}")
         else:
-            context.bot.send_message(chat_id=chat_id, text=f"Sorry, I don't understand your command. Use /start to start")
+            context.bot.send_message(chat_id=chat_id, text=Messages.error_unknown_command)
 
     def target(self):
-        print("listener started")
+        print("admin process started")
         self.updater = Updater(cfg.telegram_token, use_context=True)
 
         dispatcher = self.updater.dispatcher
