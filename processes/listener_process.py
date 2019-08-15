@@ -42,9 +42,9 @@ def add_menu_keyboard():
     return InlineKeyboardMarkup(keyboard + [[InlineKeyboardButton(Messages.go_back, callback_data=f'main')]])
 
 
-class AdminProcess(DaemonProcess):
+class ListenerProcess(DaemonProcess):
     def __init__(self):
-        super(AdminProcess, self).__init__(name="AdminProcess")
+        super(ListenerProcess, self).__init__(name="ListenerProcess")
         self.updater = None
         self.last_commands = {}
 
