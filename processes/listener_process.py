@@ -8,8 +8,6 @@ from config import config as cfg
 from resources import examples
 from utils.process_utils import DaemonProcess
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-
 
 class Messages:
     title_menu_main = 'Choose the option in main menu:'
@@ -43,8 +41,9 @@ def add_menu_keyboard():
 
 
 class ListenerProcess(DaemonProcess):
-    def __init__(self):
+    def __init__(self, admin_queue):
         super(ListenerProcess, self).__init__(name="ListenerProcess")
+        self.admin_queue = admin_queue
         self.updater = None
         self.last_commands = {}
 
