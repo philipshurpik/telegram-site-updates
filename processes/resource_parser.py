@@ -19,7 +19,7 @@ class ResourceParser:
         self.name = f"{self.user_id}_{key}_{index}"
         self.tracked_keys = tracked_fields[key]["keys"]
         self.tracked_values = tracked_fields[key]["values"]
-        self.dict_path = os.path.join(cfg.data_folder, f"{user_id}_{key}_{get_hash(url)}.npy")
+        self.dict_path = os.path.join(cfg.items_folder, f"{user_id}_{key}_{get_hash(url)}.npy")
         self.state_dict = self.load_state()
 
     def check_updates(self):

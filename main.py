@@ -9,7 +9,8 @@ from utils.process_utils import start_process, check_processes
 
 
 def main():
-    os.makedirs(cfg.data_folder, exist_ok=True)
+    os.makedirs(cfg.items_folder, exist_ok=True)
+    os.makedirs(cfg.users_folder, exist_ok=True)
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
     processes = []
     updates_queue = multiprocessing.Queue()

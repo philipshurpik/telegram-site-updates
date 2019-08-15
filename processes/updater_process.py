@@ -12,7 +12,6 @@ class UpdaterProcess(DaemonProcess):
         self.updater = None
 
     def target(self):
-        print("updater started")
         self.updater = Updater(cfg.telegram_token, use_context=True)
 
         while True:

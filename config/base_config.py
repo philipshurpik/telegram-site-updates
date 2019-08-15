@@ -1,5 +1,6 @@
 class Config:
-    data_folder = "data"
+    users_folder = "data/users"
+    items_folder = "data/items"
     error_timeout = 60
     poll_timeout = 60 * 30
     telegram_token = 'TOKEN'

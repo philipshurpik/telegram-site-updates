@@ -76,7 +76,6 @@ class AdminProcess(DaemonProcess):
             context.bot.send_message(chat_id=chat_id, text=Messages.error_unknown_command)
 
     def target(self):
-        print("admin process started")
         self.updater = Updater(cfg.telegram_token, use_context=True)
 
         dispatcher = self.updater.dispatcher
